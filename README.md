@@ -13,7 +13,7 @@ Some proprieties :
 
 The cryptosystem uses :
 * **OTP** - for symmetric block encryption, which is *pratically* unbreakable
-* **Whirplool** - it provides a recursive mechanism for synchronous key generation, using some additional algorithmics with XOR, to prevent chosen ciphertext attacks
+* **Whirlpool** - it provides a recursive mechanism for synchronous key generation, using some additional algorithmics with XOR, to prevent chosen ciphertext attacks
 * **RIPEMD-160** - *ensures* data integrity and forging protection
 * **Flags** - transmission control and anomaly detection/prevention
 * **Nonce** - to prevent known-plaintext attacks and their derivatives
@@ -46,9 +46,12 @@ Enter the IP, share the keys and communicate.
 ###Notes
 
 In case of popularity, some more technical details are to be revealed.
+
 If you are behind NAT/PAT, you can try [pwnat](http://samy.pl/pwnat).
+
 This is all experimental and further modifications/improvements are desirable.
 
 > "One must acknowledge with cryptography no amount of violence will ever solve a math problem."
+
 Jacob Appelbaum, *Cypherpunks: Freedom and the Future of the Internet*
 
