@@ -46,9 +46,12 @@ Enter the IP, share the keys and communicate.
 ###Notes
 
 In case of popularity, some more technical details are to be revealed.
+
 If you are behind NAT/PAT, you can try [pwnat](http://samy.pl/pwnat).
+
 This is all experimental and further modifications/improvements are desirable.
 
 > "One must acknowledge with cryptography no amount of violence will ever solve a math problem."
+
 Jacob Appelbaum, *Cypherpunks: Freedom and the Future of the Internet*
 
