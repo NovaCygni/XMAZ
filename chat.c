@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <strings.h>
+#include <string.h>
 #include <unistd.h>
 
 #include <sys/types.h>
@@ -35,29 +36,31 @@ void end(int param){
 	endAll=1;
 }
 
-int hostname_to_ip(char * hostname , char* ip)
+int hostname2ip(char * hostname , char* ip)
 {
-    struct hostent *he;
-    struct in_addr **addr_list;
-    int i;
-         
-    if ( (he = gethostbyname( hostname ) ) == NULL)
-    {
-        // get the host info
-        herror("gethostbyname");
-        return 1;
-    }
- 
-    addr_list = (struct in_addr **) he->h_addr_list;
-     
-    for(i = 0; addr_list[i] != NULL; i++)
-    {
-        //Return the first one;
-        strcpy(ip , inet_ntoa(*addr_list[i]) );
-        return 0;
-    }
-     
-    return 1;
+ struct addrinfo *result, *rp, hints;
+
+ memset(&hints, 0, sizeof(hints));
+ hints.ai_socktype = SOCK_STREAM; // TCP
+
+ int tmp = getaddrinfo(hostname, NULL, &hints, &result);
+ if (tmp != 0) {
+  fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(tmp));
+  return 1;
+ }
+
+ for (rp = result;rp != NULL;rp = rp->ai_next) {
+  char buf[IP_SIZE];
+	for(int i=0; i<IP_SIZE; i++)
+		buf[i]=0;
+   struct in_addr* a4 = & ((struct sockaddr_in*) rp->ai_addr)->sin_addr;
+   inet_ntop(rp->ai_family, a4, buf, sizeof(buf));
+	for(int i=0; i<IP_SIZE; i++)
+		ip[i]=buf[i];
+ }
+
+ freeaddrinfo(result);
+ return 0;
 }
 
 int exchangeKeys(int sock_fd, struct sockaddr_in *peer, Partner *partner)
@@ -593,7 +596,7 @@ int main()
 			fgets(input,sizeof(input),stdin);
 			strtok(input,"\n");
 // veritfy IP
-			for(int i=0; i<IP_SIZE;i++)
+			for(int i=0; i<DATA_SIZE;i++)
 				partner.ip[i]=input[i];
 			update(&partner);
 			printf("Updated\n");
@@ -631,7 +634,7 @@ int main()
 			input[i]=0;
 		fgets(input,sizeof(input),stdin);
 		strtok(input,"\n");
-		for(int i=0; i<IP_SIZE;i++)
+		for(int i=0; i<DATA_SIZE;i++)
 			partner.ip[i]=input[i];
 		add(&partner);
 		restart=0;
@@ -651,13 +654,18 @@ int main()
         char ip[IP_SIZE];
 	for(int i=0; i<IP_SIZE; i++)
 		ip[i]=0;
-        if(!hostname_to_ip(partner.ip , ip))
-                for(int i=0; i<IP_SIZE; i++)
-                        partner.ip[i]=ip[i];
+        if(!hostname2ip(partner.ip , ip)){
+  if (inet_aton(ip, &peer_addr.sin_addr) == 0) {
+    printf("Error - invalid remote address %s\n",partner.ip);
+    return 1;
+  }
+	}
+	else{
   if (inet_aton(partner.ip, &peer_addr.sin_addr) == 0) {
     printf("Error - invalid remote address %s\n",partner.ip);
     return 1;
   }
+	}
 
   sock_fd = socket(AF_INET, SOCK_DGRAM, 0);
   if (sock_fd < 0) {

@@ -7,7 +7,6 @@
 
 #define KEY_SIZE 64
 #define PARTNERS "partners"
-#define IP_SIZE 4*4
 #define FLAGS_SIZE 1
 
 
@@ -15,7 +14,7 @@ typedef struct Partner Partner;
 struct Partner{
 	int number;
 	char name[KEY_SIZE];
-	char ip[IP_SIZE];
+	char ip[KEY_SIZE];
 //KEY_SIZE in file
 	char flags;
 //KEY_SIZE in file
@@ -52,8 +51,8 @@ void setPartner(Partner *partner, int number){
                 printf("Cant get partner!\n");
 	fseek(file,number*KEY_SIZE*6,SEEK_SET);
 	fread(partner->name,KEY_SIZE,1,file);
-	fread(partner->ip,IP_SIZE,1,file);
-	fseek(file,KEY_SIZE-IP_SIZE,SEEK_CUR);
+	fread(partner->ip,KEY_SIZE,1,file);
+	fseek(file,KEY_SIZE-KEY_SIZE,SEEK_CUR);
 	char flags[FLAGS_SIZE];
 	fread(flags,FLAGS_SIZE,1,file);
 	partner->flags=flags[0];
@@ -88,8 +87,8 @@ void update(Partner *partner){
                 printf("Cant get partner!\n");
 	fseek(file,partner->number*KEY_SIZE*6,SEEK_SET);
 	fwrite(partner->name,KEY_SIZE,1,file);
-	fwrite(partner->ip,IP_SIZE,1,file);
-	fseek(file,KEY_SIZE-IP_SIZE,SEEK_CUR);
+	fwrite(partner->ip,KEY_SIZE,1,file);
+	fseek(file,KEY_SIZE-KEY_SIZE,SEEK_CUR);
 	char flags[FLAGS_SIZE];
 	flags[0]=partner->flags;
 	fwrite(flags,FLAGS_SIZE,1,file);
@@ -122,9 +121,9 @@ void add(Partner *partner){
                 printf("Cant add partner!\n");
 //	fseek(file,0,SEEK_END);
 	fwrite(partner->name,KEY_SIZE,1,file);
-	fwrite(partner->ip,IP_SIZE,1,file);
+	fwrite(partner->ip,KEY_SIZE,1,file);
 	partner->flags=0;
-	for(int i=0; i<2*KEY_SIZE-IP_SIZE+FLAGS_SIZE-1; i++)
+	for(int i=0; i<2*KEY_SIZE-KEY_SIZE+FLAGS_SIZE-1; i++)
 		fputc(0,file);
 	for(int i=0;i<KEY_SIZE;i++)
 		partner->key[i]=0;

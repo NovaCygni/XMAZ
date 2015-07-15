@@ -8,14 +8,13 @@
 
 #define KEY_SIZE 64
 #define PARTNERS "partners"
-#define IP_SIZE 4*4
 
 
 typedef struct Partner Partner;
 struct Partner{
 	int number;
 	char name[KEY_SIZE];
-	char ip[IP_SIZE];
+	char ip[KEY_SIZE];
 	char flags;
         unsigned char key[KEY_SIZE];
         unsigned char prevKey[KEY_SIZE];
