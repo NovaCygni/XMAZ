@@ -17,6 +17,7 @@
 #include <signal.h>
 
 #include <curses.h>
+#include <locale.h>
 
 #define DATA_SIZE 64
 #define MESSAGE_SIZE 32
@@ -211,6 +212,7 @@ int chat(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 	int prey;
 	char *self="MESSAGE";
 	WINDOW *chat, *input, *status;
+	setlocale(LC_CTYPE,"");
         initscr();
 	signal(SIGINT,end);
 	start_color();
@@ -688,8 +690,9 @@ int main()
 	}
 	if(newPartner==DATA_SIZE) newPartner=1;
 	else newPartner=0;
-	int status=4;
-  if(newPartner) if(!exchangeKeys(sock_fd, &peer_addr, &partner)) 
+	int status=5;
+  if(newPartner) status=exchangeKeys(sock_fd, &peer_addr, &partner);
+	if(status!=4)
 	status=chat(sock_fd, &peer_addr, &partner);
 	switch(status){
 		case 1:
