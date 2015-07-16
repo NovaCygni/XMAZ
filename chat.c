@@ -688,8 +688,9 @@ int main()
 	}
 	if(newPartner==DATA_SIZE) newPartner=1;
 	else newPartner=0;
-  if(newPartner) exchangeKeys(sock_fd, &peer_addr, &partner);
-	int status=chat(sock_fd, &peer_addr, &partner);
+	int status=4;
+  if(newPartner) if(!exchangeKeys(sock_fd, &peer_addr, &partner)) 
+	status=chat(sock_fd, &peer_addr, &partner);
 	switch(status){
 		case 1:
                 	printf("!!! Received Previous ACK! Transmission corrupted! Try another time later !!!\n");

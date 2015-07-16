@@ -23,8 +23,9 @@ Nevertheless, there are some inconveniences like :
 * 32 characters transfer at once
 * if both IPv4 addresses are public, at least one has to be accessible directly (not behind NAT or with port forwarding)
 * no identification on protocol/algorithmic level (but automatic due to key bound)
-* trust for received public key
+* trust for received public key (and DNS if used)
 * communication database is in clear (should be encrypted)
+* UTF encoding may not work correctly (because of ncurses)
 
 On the other hand, the cryptosystem relies on : 
 * UDP port 1307 - transport
