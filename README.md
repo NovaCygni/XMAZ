@@ -25,7 +25,7 @@ Nevertheless, there are some inconveniences like :
 * no identification on protocol/algorithmic level (but automatic due to key bound)
 * trust for received public key (and DNS if used)
 * communication database is in clear (should be encrypted)
-* UTF encoding may not display correctly
+* some UTF-encoded data may be disppayed incorrectly
 
 On the other hand, the cryptosystem relies on : 
 * UDP port 1307 - transport
@@ -37,7 +37,7 @@ On the other hand, the cryptosystem relies on :
 ##Install & Launch
 
 ```bash
-apt-get install libssl-dev libncurses-dev libncursesw5-dev
+apt-get install libssl-dev libncurses-dev
 cd $XMAZ_SOURCE_DIRECTORY
 make
 ./XMAZ

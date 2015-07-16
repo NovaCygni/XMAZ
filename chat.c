@@ -17,7 +17,6 @@
 #include <signal.h>
 
 #include <curses.h>
-#include <locale.h>
 
 #define DATA_SIZE 64
 #define MESSAGE_SIZE 32
@@ -212,7 +211,6 @@ int chat(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 	int prey;
 	char *self="MESSAGE";
 	WINDOW *chat, *input, *status;
-	setlocale(LC_CTYPE,"");
         initscr();
 	signal(SIGINT,end);
 	start_color();
