@@ -25,7 +25,7 @@ Nevertheless, there are some inconveniences like :
 * no identification on protocol/algorithmic level (but automatic due to key bound)
 * trust for received public key (and DNS if used)
 * communication database is in clear (should be encrypted)
-* some UTF-encoded data may be disppayed incorrectly
+* some UTF-encoded data may be displayed incorrectly
 
 On the other hand, the cryptosystem relies on : 
 * UDP port 1307 - transport
