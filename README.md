@@ -13,9 +13,9 @@ Some proprieties :
 
 The cryptosystem uses :
 * **OTP** - for symmetric block encryption, which is *pratically* unbreakable
-* **Whirplool** - it provides a recursive mechanism for synchronous key generation, using some additional algorithmics with XOR, to prevent chosen ciphertext attacks
+* **Whirplool** - it provides a recursive mechanism for synchronous key generation, using some additional algorithmics and mathematics, to prevent cryptanalysis
 * **RIPEMD-160** - *ensures* data integrity and forging protection
-* **Flags** - transmission control and anomaly detection/prevention
+* **Flags** - custom transmission control and anomaly detection/prevention
 * **Nonce** - to prevent known-plaintext attacks and their derivatives
 * **ECDHE** - a *proposition* for key exchange
 
