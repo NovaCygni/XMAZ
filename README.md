@@ -37,7 +37,7 @@ On the other hand, the cryptosystem relies on :
 ##Install & Launch
 
 ```bash
-apt-get install libssl-dev libncurses-dev
+apt-get install libssl-dev libncurses-dev libncursesw5-dev
 cd $XMAZ_SOURCE_DIRECTORY
 make
 ./XMAZ
