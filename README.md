@@ -16,7 +16,7 @@ The cryptosystem uses :
 * **Whirplool** - it provides a recursive mechanism for synchronous key generation, using some additional algorithmics and mathematics, to prevent cryptanalysis
 * **RIPEMD-160** - *ensures* data integrity and forging protection
 * **Flags** - custom transmission control and anomaly detection/prevention
-* **Nonce** - to prevent known-plaintext attacks and their derivatives
+* **Nonce** - another cryptanalysis prevention
 * **ECDHE** - a *proposition* for key exchange
 
 Nevertheless, there are some inconveniences like :
