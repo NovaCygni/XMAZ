@@ -150,8 +150,8 @@ int exchangeKeys(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 
       if (fds[1].revents & (POLLIN | POLLPRI)) {
 	ok=1;
-        bytes = recvfrom(sock_fd, input_buffer, sizeof(input_buffer),
-                         0, NULL, NULL);
+	int len = sizeof(*peer);
+        bytes = recvfrom(sock_fd, input_buffer, sizeof(input_buffer), 0, (struct sockaddr *)peer, (socklen_t *)&len);
 	const unsigned char *cnstBuff=input_buffer;
         if (bytes < 0) {
           printf("Error - recvfrom error: %s\n", strerror(errno));
@@ -330,8 +330,8 @@ int chat(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 			unsigned char ack=0;
 ////////RETRIVING///////
 received=1;
-        bytes = recvfrom(sock_fd, input_buffer, sizeof(input_buffer),
-                         0, NULL, NULL);
+	int len = sizeof(*peer);
+        bytes = recvfrom(sock_fd, input_buffer, sizeof(input_buffer), 0, (struct sockaddr *)peer, (socklen_t *)&len);
         if (bytes < 0) {
           printf("Error - recvfrom error: %s\n", strerror(errno));
           break;
