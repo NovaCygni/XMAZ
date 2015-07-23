@@ -21,14 +21,14 @@ The cryptosystem uses :
 
 Nevertheless, there are some inconveniences like :
 * 32 characters transfer at once
-* if both IPv4 addresses are public, at least one has to be accessible directly (not behind NAT or with port forwarding)
+* if both IPv4 addresses are public, at least one has to be accessible directly (not behind symmetric NAT or with port forwarding)
 * no identification on protocol/algorithmic level (but automatic due to key bound)
 * trust for received public key (and DNS if used)
 * communication database is in clear (should be encrypted)
 * some UTF-encoded data may be displayed incorrectly
 
 On the other hand, the cryptosystem relies on : 
-* UDP port 1307 - transport
+* UDP port 1307 - transport and NAT traversal
 * IPv4 WAN/LAN addresses - anonymous identification
 * C libraries :
 	- OpenSSL - crypto, hashes and generation
@@ -48,7 +48,7 @@ Enter the IP, share the keys and communicate.
 
 In case of popularity, some more technical details are to be revealed.
 
-If you are behind NAT/PAT, you can try [pwnat](http://samy.pl/pwnat).
+If you are behind NAT/PAT, you can try to re-establish communication continuously or [pwnat](http://samy.pl/pwnat).
 
 This is all experimental and further modifications/improvements are desirable.
 
