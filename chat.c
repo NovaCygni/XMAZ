@@ -123,7 +123,7 @@ int exchangeKeys(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 	getPubKey(ecdhe.keys,pubKey);
 	printf("		Your public key : ");
 	for(int i=0; i<PUBKEY_SIZE; i++)
-		printf("		%02x:",pubKey[i]);
+		printf("%02x:",pubKey[i]);
 	printf("		\n");
 	unsigned char secret[SECRET_SIZE];
 	printf("		Waiting for partners public key...\n");
@@ -199,7 +199,7 @@ int exchangeKeys(int sock_fd, struct sockaddr_in *peer, Partner *partner)
         if (bytes > 0) {
 		printf("		RECEIVED PARTNERS PUBLIC KEY : ");
 		for(int i=0; i<PUBKEY_SIZE; i++)
-			printf("		%02x:",input_buffer[i]);
+			printf("%02x:",input_buffer[i]);
 		printf("		\n");
 		if(!sended){
 		printf("		SENDING THE PARTNER YOUR PUBLIC KEY...\n");
