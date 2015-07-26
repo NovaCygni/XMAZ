@@ -25,6 +25,8 @@
 #define IP_SIZE 4*4
 #define SECRET_SIZE 66
 #define PUBKEY_SIZE 133
+#define START "ASCIIhi"
+#define END "ASCIIend"
 
 #include "packet.h"
 #include "partner.h"
@@ -36,14 +38,15 @@ void end(int param){
 	endAll=1;
 }
 
-void printHi()
+int printStart()
 {
-    char *filename = "ASCIIhi";
+    char *filename = START;
     FILE *fptr = NULL;
 
     if((fptr = fopen(filename,"r")) == NULL)
     {
         fprintf(stderr,"error opening %s\n",filename);
+	return 1;
     }
 
     char read_string[160];
@@ -53,16 +56,18 @@ void printHi()
         printf("%s",read_string);
 
     fclose(fptr);
+	return 0;
 }
 
-void printEnd()
+int printEnd()
 {
-    char *filename = "ASCIIend";
+    char *filename = END;
     FILE *fptr = NULL;
 
     if((fptr = fopen(filename,"r")) == NULL)
     {
         fprintf(stderr,"error opening %s\n",filename);
+	return 1;
     }
 
     char read_string[160];
@@ -72,6 +77,7 @@ void printEnd()
         printf("%s",read_string);
 
     fclose(fptr);
+	return 0;
 }
 
 
@@ -228,7 +234,8 @@ int exchangeKeys(int sock_fd, struct sockaddr_in *peer, Partner *partner)
 		ECDHE_free(ecdhe.keys);
 		nextKey(partner);
 		nextKey(partner);
-		update(partner);
+		if(update(partner))
+			return 4;
 		printf("		SECRET ESTABLISHED\n");
 		return 0;
 	}
@@ -383,7 +390,8 @@ received=1;
                 formPacket(output_message,output_buffer,partner);
                 for(int i=0;i<DATA_SIZE;i++)
                         partner->prevData[i]=output_buffer[i];
-                update(partner);
+                if(update(partner))
+			return 4;
 //output_buffer[13]=7;
                 bytes = sendto(sock_fd, output_buffer, DATA_SIZE, 0,
                                (struct sockaddr *)peer, sizeof(struct sockaddr_in));
@@ -550,11 +558,14 @@ if(received){
 int main()
 {
 	int number=partnersNumber();
+	if(number==-1)
+		return 1;
 	Partner partner;
 	char restart=1;
 	char input[DATA_SIZE];
 	int choice=2;
-	printHi();
+	if(printStart())
+		return 1;
 	while(restart){
 	if(number>=0){
 		printf("		Choose an action to perform by number :\n");
@@ -571,13 +582,16 @@ int main()
 		case 0:
 	printf("		Choose someone by number :\n");
 	for(int i=0; i<=number;i++){
-		getPartner(&partner,i);
+		if(getPartner(&partner,i))
+			return 1;
 		printf("		%d - %s\n",i,partner.name);
 	}
 	fgets(input,sizeof(input),stdin);
 	choice=atoi(input);
-	if(choice>=0 && choice<=number)
-		setPartner(&partner,choice);
+	if(choice>=0 && choice<=number){
+		if(setPartner(&partner,choice))
+			return 1;
+	}
 	else
 		printf("		Wrong selection!\n");
 /*
@@ -602,13 +616,16 @@ int main()
 		case 1:
 	printf("		Choose someone by number :\n");
 	for(int i=0; i<=number;i++){
-		getPartner(&partner,i);
+		if(getPartner(&partner,i))
+			return 1;
 		printf("		%d - %s\n",i,partner.name);
 	}
 	fgets(input,sizeof(input),stdin);
 	choice=atoi(input);
-	if(choice>=0 && choice<=number)
-		setPartner(&partner,choice);
+	if(choice>=0 && choice<=number){
+		if(setPartner(&partner,choice))
+			return 1;
+	}
 	else
 		printf("		Wrong selection!\n");
 	printf("		You choosed %s\n",partner.name);
@@ -627,7 +644,8 @@ int main()
 			strtok(input,"\n");
 			for(int i=0; i<DATA_SIZE;i++)
 				partner.name[i]=input[i];
-			update(&partner);
+			if(update(&partner))
+				return 1;
 			printf("		Updated\n");
 		break;
 		case 1:
@@ -637,7 +655,8 @@ int main()
 // veritfy IP
 			for(int i=0; i<DATA_SIZE;i++)
 				partner.ip[i]=input[i];
-			update(&partner);
+			if(update(&partner))
+				return 1;
 			printf("		Updated\n");
 		break;
 /*		case X:
@@ -675,7 +694,8 @@ int main()
 		strtok(input,"\n");
 		for(int i=0; i<DATA_SIZE;i++)
 			partner.ip[i]=input[i];
-		add(&partner);
+		if(add(&partner))
+			return 1;
 		restart=0;
 		break;
 		default:
@@ -733,13 +753,13 @@ int main()
 	status=chat(sock_fd, &peer_addr, &partner);
 	switch(status){
 		case 1:
-                	printf("		!!! Received Previous ACK! Transmission corrupted! Try another time later !!!\n");
+                	printf("!!! Received Previous ACK! Transmission corrupted! Try another time later !!!\n");
 		break;
 		case 2:
-                	printf("		!!! Bad Packet Received! Try another time later !!!\n");
+                	printf("!!! Bad Packet Received! Try another time later !!!\n");
 		break;
 		case 3:
-                	printf("		!!! Transmission corrupted! Try another time later !!!\n");
+                	printf("!!! Transmission corrupted! Try another time later !!!\n");
 		break;
 	}
 
@@ -763,7 +783,8 @@ int main()
 	partner.ip[5]='.';
 	partner.ip[6]='0';
 	inet_aton(partner.ip, &peer_addr.sin_addr);
-	printEnd();
+	if(printEnd())
+		return status;
 
   return status;
 }

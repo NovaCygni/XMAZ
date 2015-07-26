@@ -9,7 +9,6 @@
 #define KEY_SIZE 64
 #define PARTNERS "partners"
 
-
 typedef struct Partner Partner;
 struct Partner{
 	int number;
@@ -22,11 +21,11 @@ struct Partner{
 };
 
 int partnersNumber();
-void getPartner(Partner *partner, int number);
-void setPartner(Partner *partner, int number);
+int getPartner(Partner *partner, int number);
+int setPartner(Partner *partner, int number);
 void nextKey(Partner *partner);
-void update(Partner *partner);
+int update(Partner *partner);
 //void delete(Partner *partner);
-void add(Partner *partner);
+int add(Partner *partner);
 
 #endif

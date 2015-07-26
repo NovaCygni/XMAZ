@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 #include "hasher.h"
 #include "xor.h"
@@ -8,7 +9,6 @@
 #define KEY_SIZE 64
 #define PARTNERS "partners"
 #define FLAGS_SIZE 1
-
 
 typedef struct Partner Partner;
 struct Partner{
@@ -25,8 +25,10 @@ struct Partner{
 
 int partnersNumber(){
 	FILE *file = fopen(PARTNERS, "rb");
-        if (file==NULL)
-                printf("Cant get partner!\n");
+        if (file==NULL){
+                printf("!!! Cant get partners!\n");
+		return -1;
+	}
 	fseek(file, 0, SEEK_END);
 	int bytes = ftell(file);
 	fclose(file);
@@ -34,21 +36,26 @@ int partnersNumber(){
 	return bytes/KEY_SIZE/6-1;
 }
 
-void getPartner(Partner *partner, int number){
+int getPartner(Partner *partner, int number){
 	FILE *file = fopen(PARTNERS,"rb");
-        if (file==NULL)
-                printf("Cant get partner!\n");
+        if (file==NULL){
+                printf("!!! Cant get partners!\n");
+		return 1;
+	}
 	fseek(file,number*KEY_SIZE*6,SEEK_SET);
 	fread(partner->name,KEY_SIZE,1,file);
 	fclose(file);
 	file=NULL;
+	return 0;
 }
 
-void setPartner(Partner *partner, int number){
+int setPartner(Partner *partner, int number){
 	partner->number=number;
 	FILE *file = fopen(PARTNERS,"rb");
-        if (file==NULL)
-                printf("Cant get partner!\n");
+        if (file==NULL){
+                printf("!!! Cant get partners!\n");
+		return 1;
+	}
 	fseek(file,number*KEY_SIZE*6,SEEK_SET);
 	fread(partner->name,KEY_SIZE,1,file);
 	fread(partner->ip,KEY_SIZE,1,file);
@@ -62,6 +69,7 @@ void setPartner(Partner *partner, int number){
 	fread(partner->prevData,KEY_SIZE,1,file);
 	fclose(file);
 	file=NULL;
+	return 0;
 }
 
 void nextKey(Partner *partner){
@@ -81,10 +89,12 @@ void nextKey(Partner *partner){
 	
 }
 
-void update(Partner *partner){
+int update(Partner *partner){
 	FILE *file = fopen(PARTNERS,"rb+");
-        if (file==NULL)
-                printf("Cant get partner!\n");
+        if (file==NULL){
+                printf("!!! Cant get partners!\n");
+		return 1;
+	}
 	fseek(file,partner->number*KEY_SIZE*6,SEEK_SET);
 	fwrite(partner->name,KEY_SIZE,1,file);
 	fwrite(partner->ip,KEY_SIZE,1,file);
@@ -98,27 +108,33 @@ void update(Partner *partner){
 	fwrite(partner->prevData,KEY_SIZE,1,file);
 	fclose(file);
 	file=NULL;
+	return 0;
 }
 
 /*
-void delete(Partner *partner){
+int delete(Partner *partner){
 	FILE *file = fopen(PARTNERS,"rb+");
-        if (file==NULL)
-                printf("Cant get partner!\n");
+        if (file==NULL){
+                printf("!!! Cant get partners!\n");
+		return 1;
+	}
 	fseek(file,partner->number*KEY_SIZE*6,SEEK_SET);
 	int position=ftello(file);
 //rewrite to current from next, truncate end-record
 	ftruncate(fileno(file),position);
 	fclose(file);
 	file=NULL;
+	return 0;
 }
 */
 
-void add(Partner *partner){
+int add(Partner *partner){
 	partner->number=partnersNumber()+1;
 	FILE *file = fopen(PARTNERS,"ab");
-        if (file==NULL)
-                printf("Cant add partner!\n");
+        if (file==NULL){
+                printf("!!! Cant add partners!\n");
+		return 1;
+	}
 //	fseek(file,0,SEEK_END);
 	fwrite(partner->name,KEY_SIZE,1,file);
 	fwrite(partner->ip,KEY_SIZE,1,file);
@@ -136,4 +152,5 @@ void add(Partner *partner){
 	fwrite(partner->prevData,KEY_SIZE,1,file);
 	fclose(file);
 	file=NULL;
+	return 0;
 }
