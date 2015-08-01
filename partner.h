@@ -25,7 +25,7 @@ int getPartner(Partner *partner, int number);
 int setPartner(Partner *partner, int number);
 void nextKey(Partner *partner);
 int update(Partner *partner);
-//void delete(Partner *partner);
+//int delete(Partner *partner);
 int add(Partner *partner);
 
 #endif

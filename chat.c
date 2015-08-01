@@ -72,6 +72,7 @@ int printEnd()
 
     char read_string[160];
 
+	printf("\n");
     while(fgets(read_string,sizeof(read_string),fptr) != NULL)
 //        printf("%1.1s",read_string);
         printf("%s",read_string);
