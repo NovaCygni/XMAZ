@@ -559,7 +559,7 @@ if(received){
 int main()
 {
 	int number=partnersNumber();
-	if(number==-1)
+	if(number==-2)
 		return 1;
 	Partner partner;
 	char restart=1;

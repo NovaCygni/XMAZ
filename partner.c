@@ -27,7 +27,7 @@ int partnersNumber(){
 	FILE *file = fopen(PARTNERS, "rb");
         if (file==NULL){
                 printf("!!! Cant get partners!\n");
-		return -1;
+		return -2;
 	}
 	fseek(file, 0, SEEK_END);
 	int bytes = ftell(file);
