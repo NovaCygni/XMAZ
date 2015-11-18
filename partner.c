@@ -33,7 +33,7 @@ int partnersNumber(){
 	int bytes = ftell(file);
 	fclose(file);
 	file=NULL;
-	return bytes/KEY_SIZE/6-1;
+	return bytes/KEY_SIZE/6;
 }
 
 int getPartner(Partner *partner, int number){
