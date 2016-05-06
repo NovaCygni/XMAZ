@@ -739,7 +739,7 @@ int main()
   if (bind(sock_fd, (struct sockaddr *)(&server_addr),
            sizeof(server_addr)) < 0) {
     printf("		Error - failed to bind socket: %s\n", strerror(errno));
-    return 1;
+//    return 1;
   }
 
 	int newPartner=0;
